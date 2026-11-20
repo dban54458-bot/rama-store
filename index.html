@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101014">
+<title>RAMA STORE — Top Up Game</title>
+<style>
+:root{--bg:#0c0c10;--panel:#17171e;--gold:#f3bd4b;--muted:#a7a7b2;--white:#f8f7f2;--line:#2b2a32}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--white);font-family:Inter,system-ui,Arial,sans-serif}
+header{position:sticky;top:0;z-index:5;background:#101014ed;border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+.wrap{width:min(1100px,92%);margin:auto}.nav{height:72px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:11px;font-weight:900;letter-spacing:1px}.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#ffe19a,#c58a22);color:#17130b;display:grid;place-items:center;font-size:20px}
+.brand small{display:block;color:var(--gold);font-size:10px;letter-spacing:2px}
+.pill{border:1px solid #4b3b1b;color:var(--gold);padding:8px 12px;border-radius:99px;font-size:12px}
+.hero{padding:58px 0 42px;background:radial-gradient(ellipse at 80% 0%,#47321555,transparent 50%)}
+.hero h1{font-size:clamp(34px,6vw,58px);line-height:1.03;margin:12px 0;max-width:700px}.hero h1 span{color:var(--gold)}
+.hero p{color:var(--muted);max-width:560px;line-height:1.7}.eyebrow{color:var(--gold);font-size:12px;font-weight:800;letter-spacing:2px}
+.features{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}.features span{background:#1b1a20;border:1px solid var(--line);padding:9px 12px;border-radius:9px;font-size:12px;color:#ddd}
+section{padding:26px 0 48px}h2{font-size:25px;margin:0 0 8px}.sub{color:var(--muted);margin:0 0 22px;font-size:14px}
+.games{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+.game{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:17px;text-align:left;color:var(--white);cursor:pointer;transition:.2s}
+.game:hover,.game.active{border-color:var(--gold);transform:translateY(-2px);background:#211d16}
+.game .emoji{font-size:29px;display:block;margin-bottom:12px}.game strong{display:block}.game small{color:var(--muted)}
+.order-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:22px}
+label{display:block;font-size:13px;color:#ddd;margin:14px 0 7px}
+input,select{width:100%;padding:13px 14px;background:#101015;border:1px solid #393741;border-radius:10px;color:white;font:inherit;outline:none}
+input:focus,select:focus{border-color:var(--gold)}
+.packages{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.package{border:1px solid #393741;border-radius:11px;padding:12px;background:#111116;color:white;text-align:left;cursor:pointer}
+.package.selected{border-color:var(--gold);background:#2a2112}.package b{display:block;margin-bottom:5px}.package small{color:var(--gold)}
+.paynote{font-size:12px;color:var(--muted);line-height:1.6;background:#111116;padding:12px;border-radius:10px;margin-top:15px}
+.total{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:17px;margin-top:18px}
+.btn{display:block;width:100%;border:0;border-radius:11px;background:linear-gradient(135deg,#ffe19a,#d69a2b);color:#17130b;font-weight:900;padding:15px;margin-top:17px;cursor:pointer;font-size:15px}
+.btn:hover{filter:brightness(1.06)}.hint{font-size:11px;color:var(--muted);line-height:1.6}
+footer{border-top:1px solid var(--line);padding:25px 0;color:var(--muted);font-size:12px}
+@media(max-width:760px){.games{grid-template-columns:repeat(2,1fr)}.order-grid{grid-template-columns:1fr}.hero{padding-top:42px}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav">
+  <div class="brand"><div class="logo">R</div><div>RAMA STORE<small>TOP UP ALL GAME</small></div></div>
+  <div class="pill">● LAYANAN PEMESANAN</div>
+</div></header>
+<main>
+<div class="hero"><div class="wrap">
+  <div class="eyebrow">WELCOME TO RAMA STORE</div>
+  <h1>TOP UP GAME<br><span>CEPAT & MUDAH.</span></h1>
+  <p>Pilih game dan nominal favoritmu, isi data akun dengan benar, lalu kirim pesanan langsung ke WhatsApp RAMA STORE.</p>
+  <div class="features"><span>⚡ Proses via admin</span><span>🎮 Banyak pilihan game</span><span>💬 Order WhatsApp</span></div>
+</div></div>
+<section><div class="wrap">
+  <h2>Pilih Game</h2><p class="sub">Pilih salah satu game untuk melihat pilihan nominal.</p>
+  <div class="games" id="games"></div>
+</div></section>
+<section><div class="wrap">
+  <h2>Formulir Top Up</h2><p class="sub">Masukkan data dengan teliti sebelum mengirim pesanan.</p>
+  <div class="order-grid">
+    <div class="card">
+      <label for="player">User ID / Player ID</label><input id="player" placeholder="Masukkan ID game">
+      <label for="server">Server / Zone ID (jika diperlukan)</label><input id="server" placeholder="Contoh: 1234 (opsional)">
+      <label>Pilih Nominal</label><div class="packages" id="packages"></div>
+      <label for="payment">Metode pembayaran yang ingin digunakan</label>
+      <select id="payment"><option>Konfirmasi metode dengan admin</option><option>DANA (konfirmasi admin)</option><option>GoPay (konfirmasi admin)</option><option>Transfer bank (konfirmasi admin)</option><option>QRIS (konfirmasi admin)</option></select>
+      <div class="paynote">Pembayaran belum terhubung otomatis. Admin akan mengonfirmasi harga, ketersediaan, dan instruksi pembayaran melalui WhatsApp. Jangan kirim PIN atau kata sandi akun game.</div>
+    </div>
+    <div class="card">
+      <div class="eyebrow">RINGKASAN PESANAN</div>
+      <h2 id="summaryGame" style="margin-top:10px">Mobile Legends</h2>
+      <p class="sub" id="summaryPack">Belum memilih nominal</p>
+      <div class="total"><span>Total sementara</span><strong id="total">Pilih nominal</strong></div>
+      <button class="btn" onclick="sendOrder()">PESAN VIA WHATSAPP ↗</button>
+      <p class="hint">Harga di halaman ini adalah contoh/dapat diubah. Pastikan admin mengonfirmasi harga final sebelum pembayaran. RAMA STORE tidak pernah meminta password atau kode OTP.</p>
+    </div>
+  </div>
+</div></section>
+</main>
+<footer><div class="wrap">© <span id="year"></span> RAMA STORE. Top up game dengan pemesanan melalui WhatsApp.</div></footer>
+<script>
+const WA_NUMBER = "6288294470798"; // Nomor WhatsApp RAMA STORE
+// Ubah nama dan harga paket di bagian katalog ini sebelum website dipublikasikan.
+const catalog = [
+ {name:"Mobile Legends",emoji:"⚔️",packs:[["86 Diamonds",20000],["172 Diamonds",39000],["257 Diamonds",58000],["344 Diamonds",77000]]},
+ {name:"Free Fire",emoji:"🔥",packs:[["70 Diamonds",10000],["140 Diamonds",20000],["355 Diamonds",49000],["720 Diamonds",97000]]},
+ {name:"PUBG Mobile",emoji:"🪖",packs:[["60 UC",16000],["325 UC",79000],["660 UC",159000],["1800 UC",399000]]},
+ {name:"Genshin Impact",emoji:"✨",packs:[["60 Genesis Crystals",16000],["300 + 30 Crystals",79000],["980 + 110 Crystals",249000]]}
+];
+let activeGame=0, activePack=-1;
+const rupiah=n=>"Rp"+n.toLocaleString("id-ID");
+function renderGames(){
+ document.getElementById("games").innerHTML=catalog.map((g,i)=>`<button class="game ${i===activeGame?"active":""}" onclick="chooseGame(${i})"><span class="emoji">${g.emoji}</span><strong>${g.name}</strong><small>Pilih game</small></button>`).join("");
+}
+function chooseGame(i){activeGame=i;activePack=-1;renderGames();renderPacks();updateSummary();}
+function renderPacks(){
+ const g=catalog[activeGame];
+ document.getElementById("packages").innerHTML=g.packs.map((p,i)=>`<button class="package ${i===activePack?"selected":""}" onclick="choosePack(${i})"><b>${p[0]}</b><small>${rupiah(p[1])}</small></button>`).join("");
+}
+function choosePack(i){activePack=i;renderPacks();updateSummary();}
+function updateSummary(){
+ const g=catalog[activeGame],p=g.packs[activePack];
+ document.getElementById("summaryGame").textContent=g.name;
+ document.getElementById("summaryPack").textContent=p?p[0]:"Belum memilih nominal";
+ document.getElementById("total").textContent=p?rupiah(p[1]):"Pilih nominal";
+}
+function sendOrder(){
+ const g=catalog[activeGame],p=g.packs[activePack];
+ const id=document.getElementById("player").value.trim();
+ const server=document.getElementById("server").value.trim();
+ const payment=document.getElementById("payment").value;
+ if(!id){alert("Masukkan User ID / Player ID terlebih dahulu.");document.getElementById("player").focus();return;}
+ if(!p){alert("Silakan pilih nominal top up.");return;}
+ const msg=`Halo RAMA STORE, saya ingin memesan top up.%0A%0AGame: ${encodeURIComponent(g.name)}%0AID Pemain: ${encodeURIComponent(id)}%0AServer/Zone: ${encodeURIComponent(server||"-")}%0ANominal: ${encodeURIComponent(p[0])}%0AHarga contoh: ${encodeURIComponent(rupiah(p[1]))}%0AMetode pembayaran: ${encodeURIComponent(payment)}%0A%0AMohon konfirmasi harga final dan cara pembayaran.`;
+ window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`,"_blank");
+}
+document.getElementById("year").textContent=new Date().getFullYear();
+renderGames();renderPacks();updateSummary();
+</script>
+</body></html>
